@@ -1,0 +1,52 @@
+<%- include('include/header') -%>
+
+<main>
+    <h1><%= group.name %></h1>
+    <h3>Select your name and giftee</h3>
+    
+    <label for="memberSelect">Your Name:</label>
+    <select name="member" id="memberSelect">
+        <% members.forEach(function(member) { %>
+            <option value="<%= member._id %>"><%= member.name %></option>
+        <% }); %>
+    </select>
+    
+    <label for="gifteeSelect">Select Giftee:</label>
+    <select name="giftee" id="gifteeSelect">
+        <% members.forEach(function(member) { %>
+            <option value="<%= member._id %>"><%= member.name %></option>
+        <% }); %>
+    </select>
+    <button id="assignGifteeBtn">Assign Giftee</button>
+</main>
+
+<script>
+    document.getElementById('assignGifteeBtn').addEventListener('click', function() {
+        const memberId = document.getElementById('memberSelect').value;
+        const gifteeId = document.getElementById('gifteeSelect').value;
+        if (memberId === gifteeId) {
+            alert('You cannot assign yourself as your own giftee.');
+            return;
+        }
+        fetch(`/members/${memberId}/giftee`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ gifteeId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Giftee assigned successfully!');
+            } else {
+                alert('Error assigning giftee: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+<%- include('include/footer') -%>

@@ -8,7 +8,7 @@ connectDB = require("./server/database/connection");
 connectDB();
 
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo').MongoStore;
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
