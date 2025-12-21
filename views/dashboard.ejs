@@ -1,0 +1,44 @@
+<%- include('include/header') -%>
+
+<main>
+    <h2>🎅 Welcome, <%= username %>!</h2>
+    
+    <section>
+        <h3>➕ Create New Group</h3>
+        <form action="/groups" method="POST">
+            <div>
+                <label for="groupName">Group Name</label>
+                <input type="text" id="groupName" name="name" placeholder="e.g., Family Christmas 2025" required>
+            </div>
+            <div>
+                <label for="ownerName">Your Name (as it appears to other members)</label>
+                <input type="text" id="ownerName" name="ownerName" placeholder="e.g., John" required>
+            </div>
+            <button type="submit" class="btn-secondary">🎁 Create Group</button>
+        </form>
+    </section>
+
+    <section>
+        <h3>📝 Your Groups</h3>
+        <% if (groups && groups.length > 0) { %>
+            <div class="groups-list">
+                <% groups.forEach(group => { %>
+                    <div class="group-item">
+                        <a href="/groups/<%= group._id %>"><%= group.name %></a>
+                        <span class="member-count">
+                            <% if (group.solved) { %>
+                                ✅ Completed
+                            <% } else { %>
+                                👥 <%= group.members.length %> members
+                            <% } %>
+                        </span>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p>You haven't created any groups yet. Create one above to get started! 🎄</p>
+        <% } %>
+    </section>
+</main>
+
+<%- include('include/footer') -%>

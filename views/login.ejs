@@ -1,0 +1,28 @@
+<%- include('include/header') -%>
+
+<main>
+    <div class="auth-container">
+        <section>
+            <h2>🔐 Login</h2>
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="error-box">
+                    <p><%= error %></p>
+                </div>
+            <% } %>
+            <form action="/login" method="POST">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p class="auth-link">Don't have an account? <a href="/register">Register here</a></p>
+        </section>
+    </div>
+</main>
+
+<%- include('include/footer') -%>

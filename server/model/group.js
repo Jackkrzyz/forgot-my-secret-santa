@@ -4,6 +4,10 @@
 
 const mongoose = require('mongoose');
 const groupSchema = new mongoose.Schema({
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     name: {
         type: String,
         required: true
@@ -15,6 +19,10 @@ const groupSchema = new mongoose.Schema({
     signUpLinkSuffix: {
         type: String
     },
+    solved: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const Group = mongoose.model('Group', groupSchema);
