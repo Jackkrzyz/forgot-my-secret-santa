@@ -54,6 +54,11 @@
                         <% if (member.giftee) { %>
                             <span class="badge badge-success">✓ Selected</span>
                         <% } %>
+                        <% if (!member.isOwner && !group.solved) { %>
+                            <form action="/groups/<%= group._id %>/members/<%= member._id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to remove <%= member.name %> from the group?');">
+                                <button type="submit" class="btn-delete-member" title="Remove member">✕</button>
+                            </form>
+                        <% } %>
                     </li>
                 <% }); %>
             </ul>

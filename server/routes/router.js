@@ -195,6 +195,48 @@ route.post('/groups/:groupId/members', requireAuth, async (req, res) => {
     }
 });
 
+// delete member from group
+route.post('/groups/:groupId/members/:memberId/delete', requireAuth, async (req, res) => {
+    try {
+        const group = await Group.findOne({
+            _id: req.params.groupId,
+            author: req.session.userId
+        });
+        
+        if (!group) {
+            return res.status(404).send('Group not found');
+        }
+
+        // Prevent deleting members from solved groups
+        if (group.solved) {
+            return res.redirect(`/groups/${req.params.groupId}?error=Cannot delete members from a solved group`);
+        }
+
+        // Find the member
+        const member = await Member.findById(req.params.memberId);
+        if (!member) {
+            return res.redirect(`/groups/${req.params.groupId}?error=Member not found`);
+        }
+
+        // Prevent deleting the owner
+        if (member.isOwner) {
+            return res.redirect(`/groups/${req.params.groupId}?error=Cannot delete the group owner`);
+        }
+
+        // Remove member from group's members array
+        group.members = group.members.filter(m => m.toString() !== req.params.memberId);
+        await group.save();
+
+        // Delete the member document
+        await Member.findByIdAndDelete(req.params.memberId);
+
+        res.redirect(`/groups/${req.params.groupId}`);
+    } catch (error) {
+        console.error('Delete member error:', error);
+        res.redirect(`/groups/${req.params.groupId}?error=Failed to delete member`);
+    }
+});
+
 // delete group and all its members
 route.post('/groups/:groupId/delete', requireAuth, async (req, res) => {
     try {
