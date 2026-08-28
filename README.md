@@ -2,7 +2,6 @@
 
 A Node.js + Express web app that helps a Secret Santa organizer recover their own assignment after everyone else submits theirs.
 
-🌐 Live site: [forgotmysecretsanta.com](https://forgotmysecretsanta.com)
 
 ## What it does
 
